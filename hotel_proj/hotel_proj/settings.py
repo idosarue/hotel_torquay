@@ -126,6 +126,9 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_REDIRECT_URL = 'info'
+LOGOUT_REDIRECT_URL = 'info'
+
 try:
     from .local_settings import *
 except ImportError:
