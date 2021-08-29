@@ -6,5 +6,5 @@ from django.views.generic import CreateView
 
 class SignupView(CreateView):
     form_class = SignupForm
-    success_url = reverse_lazy('info')
+    success_url = reverse_lazy('login')
     template_name = 'accounts/signup.html'

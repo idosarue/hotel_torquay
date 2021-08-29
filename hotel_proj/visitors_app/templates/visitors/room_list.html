@@ -6,23 +6,45 @@
     <div class="d-flex justify-content-center mb-5">
         <h1>Torquay Tel Aviv</h1>
     </div>
-
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <div class="d-flex flex-column align-items-center">
     
         <div class="row">
             <div class="card" style="width: 18rem;">
                 <img src="{% static 'hotel1.jpg' %}" class="card-img-top" alt="...">
                 <div class="card-body">
-                <h5 class="card-title">Room: {{object_list.room_type.name}}</h5>
-                <p class="card-text">Price: {{object_list.price_per_night}}</p>
+                <form action="" method="post">
+                        {% csrf_token %}
+                        <label for="room_type">room type: </label>
+                        <input id="room_type" type="text" name="room_type" value="{{object_list.room}}"  readonly>
+                        <label for="price_per_night">price per night: </label>
+                        <input id="price_per_night" type="text" name="price_per_night" value="{{object_list.room.price_per_night}}" readonly>
+                        <label for="room_id">Room number: </label>
+                        <input id="room_id" type="text" name="id{{room.id}}" value="{{object_list.room.id}}" readonly>
+                        <label for="start_date">Check-in: </label>
+                        <input id="start_date" type="datetime" name="start_date" value="{{object_list.start_date}}" readonly>
+                        <label for="end_date">Check-out: </label>
+                        <input id="end_date" type="datetime" name="end_date" value="{{object_list.end_date}}" readonly>
 
+                        <hr>
+
+                    <input type="submit" value="Create">
+                </form>
                 </div>
+
+
             </div>
-            <form action="POST">
-                 <div class="row"><a href="{% url 'get_booking' object_list.id%}" class="btn btn-primary">Book</a></div>
-            </form>
-        </div>
+            </div>
         
     </div>
 
 {% endblock %}
+
+{#                           <input id="room_type" type="text" name="start_date" value="{{room.start_date}}" readonly>
+<input id="room_type" type="text" name="end_date" value="{{room.end_date}}" readonly>

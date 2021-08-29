@@ -2,10 +2,14 @@
 {% load static %}
 
 {% block content %}
-{% block style%}
-<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 
-{% endblock %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li class="alert alert-success" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 
     <div class="d-flex justify-content-center mb-5">
         <h1>Torquay Tel Aviv</h1>

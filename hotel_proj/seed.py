@@ -27,4 +27,4 @@ def create_room(num):
         for x in range(4):
             Room.objects.create(room_size=size_li[x], room_type=type_li[x], price_per_night=price_li[x])
 
-create_room(10)
+# create_room(10)

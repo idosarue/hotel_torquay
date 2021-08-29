@@ -1,21 +1,18 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models.deletion import CASCADE
 from accounts.models import Profile
 from django.utils import timezone
+from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 
 class Booking(models.Model):
     check_in_date = models.DateField()
     check_out_date = models.DateField()
-    # number_of_rooms = models.IntegerField(default=1)
     number_of_people = models.ForeignKey('RoomSize', on_delete=models.PROTECT, null=True)
     room = models.ForeignKey('Room', on_delete=models.PROTECT)
-    
-    def is_vacant(self):
-        if self.room.is_vacant:
-            return True
-        else:
-            return False
+    user = models.ForeignKey(Profile, on_delete=CASCADE, null=True)
+
 
 
 class RoomType(models.Model):
@@ -35,12 +32,31 @@ class Room(models.Model):
     price_per_night = models.IntegerField(default=500)
 
     def __str__(self):
-        return self.room_type.name
-    
+        return f'{self.room_type.name}'
+
     def is_vacant(self, start_date, end_date):
-        bookings = self.booking_set.exclude(check_out_date__lt=start_date, check_in_date__gt=end_date)
+        bookings = self.booking_set.exclude(check_out_date__lt=end_date, check_in_date__lt=start_date)
         if not bookings.exists():
             return True
         else:
             return False
         
+    
+class Info(models.Model):
+    first_name = models.CharField(max_length=40)
+    last_name = models.CharField(max_length=40)
+    email = models.EmailField()
+    content = models.CharField(max_length=255)
+
+
+
+class Review(models.Model):
+    first_name = models.CharField(max_length=40)
+    last_name = models.CharField(max_length=40)
+    email = models.EmailField()
+    content = models.CharField(max_length=255)
+    class Rating(models.IntegerChoices):
+        GREAT = 1
+        AMAZING = 2
+        AWESOME = 3
+    rating = models.IntegerField(choices=Rating.choices)
